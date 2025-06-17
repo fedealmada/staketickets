@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Información del Sorteo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #0c0f1a;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #111827;
+      border-bottom: 1px solid #2c2f36;
+    }
+
+    .logo img {
+      height: 32px;
+    }
+
+    .admin-btn {
+      background-color: #1a73e8;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .admin-btn:hover {
+      background-color: #1666cc;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background-color: #1a73e822;
+      color: #1a73e8;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+    }
+
+    .info-card {
+      background-color: #111827;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    h2, h4 {
+      color: #1a73e8;
+      font-weight: 600;
+    }
+
+    code {
+      background-color: #1f2937;
+      color: #93c5fd;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      color: #60a5fa;
+    }
+
+    a:hover {
+      color: #93c5fd;
+    }
+
+    hr {
+      border-color: #1a73e8;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <a href="/">
+        <img src="/img/logo.png" alt="Logo" />
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/info" class="nav-link">Información</a>
+      <a href="/participantes" class="nav-link">Participantes</a>
+    </nav>
+
+    <a href="/admin" class="btn admin-btn">Panel de Admin</a>
+  </header>
+
+  <div class="container">
+    <div class="info-card">
+      <h2>🎉 ¡Sorteo de <strong>$1.000.000 USD</strong> – Participá ahora!</h2>
+
+      <h4 class="mt-4">📅 ¿Cuándo es el sorteo?</h4>
+      <p>El sorteo se transmitirá <strong>en vivo por Kick</strong>, en el canal de <strong>YukiRiquelme</strong>:</p>
+      <ul>
+        <li>🕙 <strong>22:00 hs (Chile)</strong></li>
+        <li>🕚 <strong>23:00 hs (Argentina)</strong></li>
+      </ul>
+
+      <hr />
+
+      <h4 class="mt-4">🎟️ ¿Qué son los tickets?</h4>
+      <p>Los tickets aumentan tus chances de ganar. Se calculan así:</p>
+      <ul>
+        <li>✅ <strong>1 ticket gratis</strong> por registrarte con el código <code>YUKIR</code></li>
+        <li>💸 <strong>+1 ticket extra</strong> cada <strong>100 USD apostados</strong> en Stake</li>
+      </ul>
+      <p><strong>Ejemplo:</strong> Si apostás 150 USD, obtenés: <code>(150 / 100) + 1 = 2 tickets</code></p>
+
+      <hr />
+
+      <h4 class="mt-4">📝 ¿Cómo participar?</h4>
+      <ol>
+        <li>Registrate en Stake con este enlace oficial:<br>
+          <a href="https://stake1021.com/es?offer=yukir&c=yuki" target="_blank">
+            https://stake1021.com/es?offer=yukir&c=yuki
+          </a>
+        </li>
+        <li>El código promocional <code>YUKIR</code> se aplica automáticamente.</li>
+        <li>¡Listo! Ya estarás participando de <strong>todos los sorteos de Yuki Riquelme</strong>.</li>
+      </ol>
+
+      <hr />
+
+      <h4 class="mt-4">🏆 ¿Por qué no te lo podés perder?</h4>
+      <ul>
+        <li>🎰 Hasta <strong>1 millón de dólares</strong> en premios</li>
+        <li>📈 Cuantos más tickets tengas, <strong>más chances de ganar</strong></li>
+        <li>🎥 Sorteo <strong>en vivo, real y 100% transparente</strong></li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

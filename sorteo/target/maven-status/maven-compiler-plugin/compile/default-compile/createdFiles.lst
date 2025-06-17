@@ -1,0 +1,9 @@
+com\staketickets\sorteo\repository\PersonaRepository.class
+com\staketickets\sorteo\controller\AuthController.class
+com\staketickets\sorteo\controller\PersonaController.class
+com\staketickets\sorteo\controller\VistaController.class
+com\staketickets\sorteo\config\SecurityConfig.class
+com\staketickets\sorteo\model\PersonaDTO.class
+com\staketickets\sorteo\service\PersonaService.class
+com\staketickets\sorteo\model\Persona.class
+com\staketickets\sorteo\SorteoApplication.class

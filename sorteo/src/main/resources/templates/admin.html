@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Personas</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+<style>
+  /* Estilo general */
+  body {
+    background-color: #0c0f1a;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Header */
+  header.navbar-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111827;
+    border-bottom: 1px solid #2c2f36;
+    padding: 1rem 2rem;
+  }
+
+  .navbar-custom .navbar-left a img {
+    height: 32px;
+  }
+
+  .navbar-custom .navbar-center {
+    font-weight: 600;
+    color: #1a73e8;
+    font-size: 1.1rem;
+  }
+
+  .navbar-custom .navbar-right i {
+    color: #cbd5e1;
+    font-size: 1.3rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .navbar-custom .navbar-right i:hover {
+    color: #1a73e8;
+  }
+
+  /* Contenedor principal */
+  .container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  /* Título */
+  h2 {
+    color: #1a73e8;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* Buscador y botón */
+  .search-create {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  #busqueda {
+    flex: 1;
+    max-width: 400px;
+    background-color: #1f2937;
+    border: 1px solid #2c2f36;
+    color: #ffffff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+  }
+
+  #busqueda::placeholder {
+    color: #94a3b8;
+  }
+
+  #busqueda:focus {
+    outline: none;
+    border-color: #1a73e8;
+    background-color: #111827;
+  }
+
+  button.btn-success {
+    background-color: #1a73e8;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    transition: background-color 0.2s ease;
+  }
+
+  button.btn-success:hover {
+    background-color: #1666cc;
+  }
+
+  /* Tabla */
+  .tabla-container {
+    background-color: #0c0f1a;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  thead {
+    background-color: #1a73e8;
+    color: white;
+  }
+
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    background-color: #111827;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #2c2f36;
+  }
+
+  tbody tr:hover {
+    background-color: #1a73e81a;
+  }
+
+ 
+  .actions-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* Botones */
+  button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-view {
+    background-color: #0dcaf0;
+    color: #000;
+  }
+
+  .btn-view:hover {
+    background-color: #0bb8d7;
+  }
+
+  .btn-edit {
+    background-color: #fbbf24;
+    color: #000;
+  }
+
+  .btn-edit:hover {
+    background-color: #d1a10b;
+  }
+
+  .btn-delete {
+    background-color: #ef4444;
+    color: white;
+  }
+
+  .btn-delete:hover {
+    background-color: #b91c1c;
+  }
+
+  /* Modales */
+  .modal-content {
+    background-color: #111827;
+    color: #ffffff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: #2c2f36;
+  }
+
+  .modal-title {
+    color: #1a73e8;
+    font-weight: 700;
+  }
+
+  .form-label {
+    color: #94a3b8;
+    font-weight: 600;
+  }
+
+  input.form-control {
+    background-color: #1f2937;
+    border: 1px solid #2c2f36;
+    color: #e0e7ff;
+    border-radius: 8px;
+  }
+
+  input.form-control:focus {
+    border-color: #1a73e8;
+    background-color: #111827;
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    background-color: #374151;
+    font-weight: 600;
+  }
+
+  .btn-secondary:hover {
+    background-color: #4b5563;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .search-create {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    #busqueda,
+    button.btn-success {
+      width: 100%;
+    }
+
+    table {
+      font-size: 0.85rem;
+    }
+
+    .actions-cell {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="navbar-custom">
+    <div class="navbar-left">
+      <a href="/admin">
+        <img src="/img/logo.png" alt="Logo" />
+      </a>
+    </div>
+    <div class="navbar-center">Bienvenido admin!</div>
+    <div class="navbar-right">
+      Cerrar sesión
+      <i id="logoutIcon" class="bi bi-person-circle" title="Cerrar sesión"></i>
+    </div>
+  </header>
+  <button onclick="descargarTickets()" class="btn btn-success mb-3">
+  Descargar lista de tickets
+</button>
+  <div class="container">
+    <h2>Gestión de Personas</h2>
+
+    <div class="search-create">
+      <input
+        type="text"
+        id="busqueda"
+        placeholder="Buscar por nombre..."
+        autocomplete="off"
+      />
+      <button
+        class="btn btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#crearModal"
+      >
+        + Crear Persona
+      </button>
+    </div>
+
+    <div class="tabla-container">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Instagram</th>
+            <th>Stake</th>
+            <th>Kick</th>
+            <th>Monto Apostado</th>
+            <th>Tickets</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tablaPersonas">
+          <!-- JS insertará filas aquí -->
+        </tbody>
+      </table>
+      <div id="paginacion" class="text-center mt-3"></div>
+    </div>
+  </div>
+
+  <!-- Modal Ver Persona -->
+  <div
+    class="modal fade"
+    id="verModal"
+    tabindex="-1"
+    aria-labelledby="verModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="verModalLabel">Detalle de Persona</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="verNombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="verNombre" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verApellido" class="form-label">Apellido</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verApellido"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verUsuarioStake" class="form-label">Usuario Stake</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verUsuarioStake"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verUsuarioInstagram" class="form-label"
+                >Usuario Instagram</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="verUsuarioInstagram"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verUsuarioKick" class="form-label">Usuario Kick</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verUsuarioKick"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verTrx" class="form-label">TRX</label>
+              <input type="text" class="form-control" id="verTrx" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verNacionalidad" class="form-label">Nacionalidad</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verNacionalidad"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verTelefono" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="verTelefono" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verMontoApostado" class="form-label">Monto Apostado</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verMontoApostado"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verFechaRegistro" class="form-label"
+                >Fecha de Registro</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="verFechaRegistro"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="verExtraTickets" class="form-label">Extra Tickets</label>
+              <input
+                type="text"
+                class="form-control"
+                id="verExtraTickets"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button
+            type="button"
+            class="btn btn-secondary w-100"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Crear Persona -->
+  <div
+    class="modal fade"
+    id="crearModal"
+    tabindex="-1"
+    aria-labelledby="crearModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <form class="modal-content p-3" id="formCrear">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="crearModalLabel">Crear Persona</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="crearNombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="crearNombre" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearApellido" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="crearApellido" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearUsuarioStake" class="form-label"
+                >Usuario Stake</label
+              >
+              <input type="text" class="form-control" id="crearUsuarioStake" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearUsuarioInstagram" class="form-label"
+                >Usuario Instagram</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="crearUsuarioInstagram"
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearUsuarioKick" class="form-label">Usuario Kick</label>
+              <input type="text" class="form-control" id="crearUsuarioKick" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearTrx" class="form-label">TRX</label>
+              <input type="text" class="form-control" id="crearTrx" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearNacionalidad" class="form-label">Nacionalidad</label>
+              <input type="text" class="form-control" id="crearNacionalidad" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearTelefono" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="crearTelefono" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="crearMontoApostado" class="form-label"
+                >Monto Apostado (USDT)</label
+              >
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="crearMontoApostado"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0 pt-0">
+          <button type="submit" class="btn btn-success w-100">
+            Crear Persona
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<!-- Modal Editar Persona -->
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content p-3" id="formEditar">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="editarModalLabel">Editar Persona</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Campo oculto para el ID -->
+        <input type="hidden" id="editarIdPersona" />
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="editarNombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="editarNombre" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarApellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="editarApellido" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarUsuarioStake" class="form-label">Usuario Stake</label>
+            <input type="text" class="form-control" id="editarUsuarioStake" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarUsuarioInstagram" class="form-label">Usuario Instagram</label>
+            <input type="text" class="form-control" id="editarUsuarioInstagram" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarUsuarioKick" class="form-label">Usuario Kick</label>
+            <input type="text" class="form-control" id="editarUsuarioKick" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarTrx" class="form-label">TRX</label>
+            <input type="text" class="form-control" id="editarTrx" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarNacionalidad" class="form-label">Nacionalidad</label>
+            <input type="text" class="form-control" id="editarNacionalidad" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarTelefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="editarTelefono" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarMontoApostado" class="form-label">Monto Apostado (USDT)</label>
+            <input type="number" step="0.01" class="form-control" id="editarMontoApostado" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="editarExtraTickets" class="form-label">Extra Tickets</label>
+            <input type="number" class="form-control" id="editarExtraTickets" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="submit" class="btn btn-warning w-100">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const PORT = "8080";
+const LOCALHOST = `http://localhost:${PORT}`;
+const API_URL = `${LOCALHOST}/api/persona`;
+let personasTotales = []; // Acá se guarda el array completo
+let paginaActual = 1;
+const filasPorPagina = 25;
+
+document.getElementById('logoutIcon').addEventListener('click', () => {
+  fetch(`${LOCALHOST}/logout`, {
+    method: 'POST',
+    credentials: 'include' // Importante si usás sesiones con cookies
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.href = '/info'; // o a donde quieras redirigir
+    } else {
+      alert('No se pudo cerrar la sesión');
+    }
+  })
+  .catch(error => {
+    console.error('Error al cerrar sesión:', error);
+  });
+});
+
+// Eventos principales
+window.addEventListener("DOMContentLoaded", () => {
+  cargarPersonas();
+  document.getElementById("busqueda").addEventListener("input", buscarPorNombre);
+  document.getElementById("formCrear").addEventListener("submit", crearPersona);
+
+});
+
+// Obtener personas y renderizar
+async function cargarPersonas() {
+  try {
+    const res = await fetch(`${API_URL}/traer`);
+    const data = await res.json();
+    personasTotales = data;
+    paginaActual = 1;
+    renderTablaPaginada();
+  } catch (err) {
+    console.error("Error al cargar personas:", err);
+    alert("No se pudieron cargar las personas.");
+  }
+}
+
+function descargarTickets() {
+    fetch(`${LOCALHOST}/api/persona/exportar-tickets`) // adaptá si usás otro puerto
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al generar el archivo');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tickets.txt';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => {
+            console.error(error);
+            alert("No se pudo descargar el archivo.");
+        });
+}
+
+
+// Buscar por nombre
+async function buscarPorNombre() {
+  const nombre = document.getElementById("busqueda").value.trim();
+  if (nombre.length === 0) return cargarPersonas();
+  if (nombre.length < 2) return;
+
+  try {
+    const res = await fetch(`${API_URL}/buscar/${nombre}`);
+    if (!res.ok) throw new Error("Error en búsqueda");
+    const data = await res.json();
+    renderTabla(data);
+  } catch (err) {
+    console.error("Error al buscar:", err);
+  }
+}
+
+function renderTablaPaginada() {
+  const tbody = document.getElementById("tablaPersonas");
+  tbody.innerHTML = "";
+
+  const inicio = (paginaActual - 1) * filasPorPagina;
+  const fin = inicio + filasPorPagina;
+  const personasPagina = personasTotales.slice(inicio, fin);
+
+  personasPagina.forEach((p, i) => {
+    const ticketsBase = Math.floor((p.montoApostado ?? 0) / 100) + 1;
+    const ticketsTotales = ticketsBase + (p.extraTickets ?? 0);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${inicio + i + 1}</td>
+      <td>${p.usuarioInstagram || "-"}</td>
+      <td>${p.usuarioKick || "-"}</td>
+      <td>${p.usuarioStake || "-"}</td>
+      <td>$${(p.montoApostado ?? 0).toFixed(2)}</td>
+      <td>${ticketsTotales}</td>
+      <td>
+        <div class="btn-group-acciones">
+          <button class="btn btn-info btn-sm btn-mostrar" data-id="${p.id}">Mostrar</button>
+          <button class="btn btn-warning btn-sm btn-editar" data-id="${p.id}">Editar</button>
+          <button class="btn btn-danger btn-sm btn-eliminar" data-id="${p.id}">Eliminar</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Botones funcionales
+  tbody.querySelectorAll(".btn-mostrar").forEach(b => b.onclick = () => mostrarPersonaPorId(b.dataset.id));
+  tbody.querySelectorAll(".btn-editar").forEach(b => b.onclick = () => editarPersonaPorId(b.dataset.id));
+  tbody.querySelectorAll(".btn-eliminar").forEach(b => b.onclick = () => eliminarPersona(b.dataset.id));
+
+  renderControlesPaginacion();
+}
+
+
+// Renderizar tabla
+function renderTabla(personas) {
+  const tbody = document.getElementById("tablaPersonas");
+  tbody.innerHTML = personas.map((p, i) => {
+    const ticketsBase = Math.floor((p.montoApostado ?? 0) / 100) + 1;
+    const ticketsTotales = ticketsBase + (p.extraTickets ?? 0);
+    return `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${p.usuarioInstagram || "-"}</td>
+        <td>${p.usuarioKick || "-"}</td>
+        <td>${p.usuarioStake || "-"}</td>
+        <td>$${(p.montoApostado ?? 0).toFixed(2)}</td>
+        <td>${ticketsTotales}</td>
+        <td>
+          <div class="btn-group-acciones">
+            <button class="btn btn-info btn-sm btn-mostrar" data-id="${p.id}">Mostrar</button>
+            <button class="btn btn-warning btn-sm btn-editar" data-id="${p.id}">Editar</button>
+            <button class="btn btn-danger btn-sm btn-eliminar" data-id="${p.id}">Eliminar</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join("");
+
+  // Eventos
+  tbody.querySelectorAll(".btn-mostrar").forEach(b => b.onclick = () => mostrarPersonaPorId(b.dataset.id));
+  tbody.querySelectorAll(".btn-editar").forEach(b => b.onclick = () => editarPersonaPorId(b.dataset.id));
+  tbody.querySelectorAll(".btn-eliminar").forEach(b => b.onclick = () => eliminarPersona(b.dataset.id));
+}
+
+// Mostrar datos
+async function mostrarPersonaPorId(id) {
+  const persona = await obtenerPersonaPorId(id);
+  if (!persona) return;
+  ["Nombre", "Apellido", "UsuarioStake", "UsuarioInstagram", "UsuarioKick", "Trx", "Nacionalidad", "Telefono", "MontoApostado", "FechaRegistro", "ExtraTickets"].forEach(f => {
+    document.getElementById(`ver${f}`).value = persona[camel(f)] ?? "";
+  });
+  new bootstrap.Modal(document.getElementById("verModal")).show();
+}
+
+
+
+// Crear persona
+async function crearPersona(e) {
+  e.preventDefault();
+  const f = s => document.getElementById(`crear${s}`).value.trim();
+  const persona = {
+    nombre: f("Nombre"), apellido: f("Apellido"), usuarioStake: f("UsuarioStake"),
+    usuarioInstagram: f("UsuarioInstagram"), usuarioKick: f("UsuarioKick"), trx: f("Trx"),
+    nacionalidad: f("Nacionalidad"), telefono: f("Telefono"),
+    montoApostado: parseFloat(f("MontoApostado")) || 0.0,
+  };
+  try {
+    const res = await fetch(`${API_URL}/crear`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(persona)
+    });
+    if (!res.ok) throw new Error();
+    alert("Persona creada exitosamente");
+    document.getElementById("formCrear").reset();
+    bootstrap.Modal.getInstance(document.getElementById("crearModal")).hide();
+    cargarPersonas();
+  } catch {
+    alert("No se pudo crear la persona.");
+  }
+}
+// Cargar datos en el modal
+async function editarPersonaPorId(id) {
+  const p = await obtenerPersonaPorId(id);
+  if (!p) return;
+
+  document.getElementById("editarIdPersona").value = p.id ?? ""; // Asegúrate que esto existe
+  document.getElementById("editarNombre").value = p.nombre ?? "";
+  document.getElementById("editarApellido").value = p.apellido ?? "";
+  document.getElementById("editarUsuarioStake").value = p.usuarioStake ?? "";
+  document.getElementById("editarUsuarioInstagram").value = p.usuarioInstagram ?? "";
+  document.getElementById("editarUsuarioKick").value = p.usuarioKick ?? "";
+  document.getElementById("editarTrx").value = p.trx ?? "";
+  document.getElementById("editarNacionalidad").value = p.nacionalidad ?? "";
+  document.getElementById("editarTelefono").value = p.telefono ?? "";
+  document.getElementById("editarMontoApostado").value = p.montoApostado ?? "";
+  document.getElementById("editarExtraTickets").value = p.extraTickets ?? "";
+
+  new bootstrap.Modal(document.getElementById("editarModal")).show();
+}
+
+// Guardar cambios
+document.getElementById("formEditar").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const id = document.getElementById("editarIdPersona").value.trim();
+
+  const persona = {
+    nombre: document.getElementById("editarNombre").value.trim(),
+    apellido: document.getElementById("editarApellido").value.trim(),
+    usuarioStake: document.getElementById("editarUsuarioStake").value.trim(),
+    usuarioInstagram: document.getElementById("editarUsuarioInstagram").value.trim(),
+    usuarioKick: document.getElementById("editarUsuarioKick").value.trim(),
+    trx: document.getElementById("editarTrx").value.trim(),
+    nacionalidad: document.getElementById("editarNacionalidad").value.trim(),
+    telefono: document.getElementById("editarTelefono").value.trim(),
+    montoApostado: parseFloat(document.getElementById("editarMontoApostado").value) || 0.0,
+    extraTickets: parseInt(document.getElementById("editarExtraTickets").value) || 0
+  };
+
+  try {
+    const res = await fetch(`${API_URL}/actualizar/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(persona)
+    });
+
+    if (!res.ok) {
+      const errorBody = await res.text();
+      console.error("Error al actualizar:", res.status, errorBody);
+      alert("Error al actualizar persona");
+      return;
+    }
+
+    alert("Persona modificada correctamente");
+    bootstrap.Modal.getInstance(document.getElementById("editarModal")).hide();
+    cargarPersonas();
+  } catch (error) {
+    console.error("Error al enviar datos:", error);
+    alert("Error inesperado al modificar persona.");
+  }
+});
+
+// Eliminar persona
+async function eliminarPersona(id) {
+  if (!confirm("¿Eliminar esta persona?")) return;
+  try {
+    const res = await fetch(`${API_URL}/borrar/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error();
+    alert("Persona eliminada correctamente");
+    cargarPersonas();
+  } catch {
+    alert("No se pudo eliminar la persona.");
+  }
+}
+
+// Obtener por ID
+async function obtenerPersonaPorId(id) {
+  try {
+    const res = await fetch(`${API_URL}/traer/${id}`);
+    if (!res.ok) throw new Error();
+    return await res.json();
+  } catch (err) {
+    console.error("Error al obtener persona:", err);
+  }
+}
+
+// Utilidad para convertir a camelCase
+function camel(str) {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+}
+
+function renderControlesPaginacion() {
+  const totalPaginas = Math.ceil(personasTotales.length / filasPorPagina);
+  const contenedor = document.getElementById("paginacion");
+  contenedor.innerHTML = "";
+
+  const anterior = document.createElement("button");
+  anterior.textContent = "Anterior";
+  anterior.disabled = paginaActual === 1;
+  anterior.className = "btn btn-secondary mx-1";
+  anterior.onclick = () => {
+    paginaActual--;
+    renderTablaPaginada();
+  };
+
+  const siguiente = document.createElement("button");
+  siguiente.textContent = "Siguiente";
+  siguiente.disabled = paginaActual === totalPaginas;
+  siguiente.className = "btn btn-secondary mx-1";
+  siguiente.onclick = () => {
+    paginaActual++;
+    renderTablaPaginada();
+  };
+
+  const info = document.createElement("span");
+  info.className = "mx-2 text-white";
+  info.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+
+  contenedor.appendChild(anterior);
+  contenedor.appendChild(info);
+  contenedor.appendChild(siguiente);
+}
+
+</script>
+
+  </body>
+</html>

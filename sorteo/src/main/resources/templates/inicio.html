@@ -1,0 +1,17 @@
+<!-- src/main/resources/templates/inicio.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Tickets Stake</title></head>
+<body style="background-color:#0F0F1C; color:white;">
+    <h1>Consulta tus tickets</h1>
+    <form action="/persona/traer" method="post">
+        <input type="text" name="keyword" placeholder="Stake o Instagram">
+        <button type="submit">Buscar</button>
+    </form>
+    <ul>
+        <li th:each="p : ${personas}">
+            <span th:text="${p.usuarioStake} + ' - ' + ${p.cantidadTickets} + ' tickets'"></span>
+        </li>
+    </ul>
+</body>
+</html>
