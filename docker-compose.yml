@@ -1,24 +1,11 @@
-version: '3'
+version: '3.8'
 
 services:
-  sorteo:
-    build: sorteo
-    mem_limit: 512m
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://sorteo_app:3306/staketickets?createDatabaseIfNotExist=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-    restart: always
-    depends_on:
-      sorteo_app:
-        condition: service_healthy
-
   sorteo_app:
     image: mysql:8.0.33
+    container_name: mysql_db
     ports:
-      - "3307:3306"  # Solo si querés acceder desde el host
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_PASSWORD: 1234
@@ -26,5 +13,19 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 10
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sorteo:
+    build: ./sorteo
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://sorteo_app:3306/staketickets?createDatabaseIfNotExist=true&serverTimezone=UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: 1234
+    restart: always
+    depends_on:
+      sorteo_app:
+        condition: service_healthy
