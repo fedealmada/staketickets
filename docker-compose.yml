@@ -1,24 +1,9 @@
-version: '3.8'
+version: '3'
 
 services:
-  sorteo_app:
-    image: mysql:8.0.33
-    container_name: mysql_db
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_PASSWORD: 1234
-      MYSQL_DATABASE: staketickets
-    restart: always
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   sorteo:
-    build: ./sorteo
+    build: sorteo
+    mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
@@ -28,4 +13,17 @@ services:
     restart: always
     depends_on:
       sorteo_app:
-        condition: service_healthy
+          condition: service_healthy
+  sorteo_app:
+    image: mysql:8.0.33 
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: staketickets
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
